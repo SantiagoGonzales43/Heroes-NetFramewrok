@@ -40,5 +40,25 @@ namespace PracticaAdoNet.Services
 
             return await _heroeRepository.CreateHeroe(heroe);
         }
+
+        public async Task<HeroeViewModels> GetHeroeById(int id)
+        {
+            var heroeDomain = await _heroeRepository.GetHeroeById(id);
+
+            if(heroeDomain == null)
+            {
+                return null;
+            }
+
+
+            var heroeTransformado = new HeroeViewModels {
+                Nombre = heroeDomain.Nombre,
+                Clase = heroeDomain.Clase,
+                Nivel = heroeDomain.Nivel             
+            };
+
+            return heroeTransformado;
+
+        }
     }
 }

@@ -1,0 +1,12 @@
+﻿@model PracticaAdoNet.Models.ViewModels.HeroeViewModels
+@{
+    ViewBag.Title = "GetHeroeById";
+}
+
+@if(Model != null)
+{
+    <h1>Nombre = @Model.Nombre</h1>
+    <p>Clase = @Model.Clase</p>
+    <p>Nivel = @Model.Nivel</p>
+}
+

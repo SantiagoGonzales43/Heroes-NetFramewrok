@@ -31,6 +31,41 @@ namespace PracticaAdoNet.Controllers
             return View(new CreateHeroeDtos());
         }
 
+        //Get por id
+        public async Task<ActionResult> GetHeroeById(int? id)
+        {
+            if (id == null || id <= 0) 
+            {
+                TempData["ErrorMessage"] = "El ID del héroe es inválido o no se ha proporcionado.";
+                return RedirectToAction("Index"); 
+            }
+
+            try
+            {
+                
+                var heroeEncontrado = await _heroeService.GetHeroeById(id);  
+
+                if (heroeEncontrado == null)
+                {
+                    TempData["ErrorMessage"] = $"No se encontró un héroe con ID: {id}.";
+                    return RedirectToAction("Index"); 
+                }
+                else
+                {
+               
+                    return View(heroeEncontrado);
+                }
+            }
+            catch (Exception ex)
+            {
+                
+                TempData["ErrorMessage"] = $"Ocurrió un error al buscar el héroe con ID {id}: {ex.Message}";
+                // Loguea la excepción para depuración
+                Console.WriteLine($"Error al obtener héroe por ID: {ex}");
+                return RedirectToAction("Index"); // Redirige a la página principal con el mensaje de error
+            }
+        }
+
         //POST: Create Heroe
         [HttpPost]
         [ValidateAntiForgeryToken]

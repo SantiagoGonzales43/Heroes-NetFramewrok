@@ -104,5 +104,48 @@ namespace PracticaAdoNet.DAL
             }
             return newIdHeroe;
         }
+
+        //GET por Id
+        public async Task<Heroe> GetHeroeById(int id)
+        {
+            var heroeEncontrado = new Heroe();
+            using(SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using(SqlCommand command = new SqlCommand("GetHeroeById",connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@Id", id);
+
+                    try
+                    {
+                        await connection.OpenAsync();
+                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            if(await reader.ReadAsync())
+                            {
+                                heroeEncontrado = new Heroe
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                    Nombre = reader.GetString(reader.GetOrdinal("Nombre")),
+                                    Clase = reader.GetString(reader.GetOrdinal("Clase")),
+                                    Nivel = reader.GetInt32(reader.GetOrdinal("Nivel")),
+                                };
+                            }
+                        };
+                    }
+                    catch(SqlException ex)
+                    {
+                        throw new Exception($"A ocurrido un error en la base de datos al conseguir el heroe por id ${ex.Message}", ex);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception($"A ocurrido un error en el servidor al conseguir el heroe por id ${ex.Message}", ex);
+                    }
+                }
+
+            }
+                return heroeEncontrado;
+        }
     }
 }

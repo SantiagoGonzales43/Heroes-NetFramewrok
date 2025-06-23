@@ -13,5 +13,6 @@ namespace PracticaAdoNet.Services
     {
         Task<List<HeroeViewModels>> GetAllHeroes();
         Task<int> CreateHeroe(CreateHeroeDtos heroe);
+        Task<HeroeViewModels> GetHeroeById(int id);
     }
 }

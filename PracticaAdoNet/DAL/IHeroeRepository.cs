@@ -10,5 +10,6 @@ namespace PracticaAdoNet.DAL
     {
         Task<List<Heroe>> GetAllHeroes();
         Task<int> CreateHeroe(CreateHeroeDtos heroe);
+        Task<Heroe> GetHeroeById(int id);
     }
 }

@@ -1,0 +1,35 @@
+﻿@model PracticaAdoNet.DTOs.CreateHeroeDtos
+
+@{
+    ViewBag.Title = "CreateHeroe";
+}
+
+<h2>Bienvenidos a crear heroe:</h2>
+
+@using(Html.BeginForm("CreateHeroe","Heroe",FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Nombre)
+        @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control", placeHolder = "Agrege el nombre de su heroe" })
+        @Html.ValidationMessageFor(m => m.Nombre,"", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Clase)
+        @Html.TextBoxFor(m => m.Clase, new { @class = "form-control", placeHolder = "Agrege la clase de su heroe" })
+        @Html.ValidationMessageFor(m => m.Clase, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Nivel)
+        @Html.TextBoxFor(m => m.Nivel, new { @class = "form-control", type = "number", min=1, max=1000 })
+        @Html.ValidationMessageFor(m => m.Nivel, "", new { @class = "text-danger" })
+    </div>
+
+    <button class="btn btn-primary">
+        Crear Heroe
+    </button>
+}
+

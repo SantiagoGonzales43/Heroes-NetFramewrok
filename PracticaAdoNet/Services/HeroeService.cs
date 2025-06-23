@@ -1,0 +1,44 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using PracticaAdoNet.Domain;
+using PracticaAdoNet.DAL;
+using PracticaAdoNet.Models.ViewModels;
+using System.Threading.Tasks;
+using PracticaAdoNet.DTOs;
+
+namespace PracticaAdoNet.Services
+{
+    public class HeroeService : IHeroeService
+    {
+       private readonly IHeroeRepository _heroeRepository;
+
+        public HeroeService()
+        {
+            _heroeRepository = new HeroeRepository();
+        }
+
+        public async Task<List<HeroeViewModels>> GetAllHeroes()
+        {
+            var domainHeroes = await _heroeRepository.GetAllHeroes();
+            var heroesTransformado = new List<HeroeViewModels>();
+            foreach (var heroe in domainHeroes)
+            {
+                heroesTransformado.Add(new HeroeViewModels
+                {
+                    Nombre = heroe.Nombre,
+                    Clase = heroe.Clase,
+                    Nivel = heroe.Nivel
+                });
+            }
+
+
+            return heroesTransformado;
+        }
+
+        public async Task<int> CreateHeroe(CreateHeroeDtos heroe) {
+
+            return await _heroeRepository.CreateHeroe(heroe);
+        }
+    }
+}

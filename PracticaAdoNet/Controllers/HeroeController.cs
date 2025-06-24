@@ -24,15 +24,9 @@ namespace PracticaAdoNet.Controllers
             return View(heroes);
         }
 
-        //Get: Create Heroe
-        [HttpGet]
-        public ActionResult CreateHeroe()
-        {
-            return View(new CreateHeroeDtos());
-        }
 
         //Get por id
-        public async Task<ActionResult> GetHeroeById(int? id)
+        public async Task<ActionResult> GetHeroeById(int id)
         {
             if (id == null || id <= 0) 
             {
@@ -66,6 +60,12 @@ namespace PracticaAdoNet.Controllers
             }
         }
 
+        //Get: Create Heroe
+        [HttpGet]
+        public ActionResult CreateHeroe()
+        {
+            return View(new CreateHeroeDtos());
+        }
         //POST: Create Heroe
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -89,6 +89,40 @@ namespace PracticaAdoNet.Controllers
             {
                 return View(heroe);
             }
+        }
+
+        //Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken] 
+        public async Task<ActionResult> DeleteHeroeById(int id) 
+        {
+            if (id <= 0) 
+            {
+                TempData["ErrorMessage"] = "ID de héroe inválido para eliminación.";
+                return RedirectToAction("Index");
+            }
+
+            try
+            {
+                var rowsAffected = await _heroeService.DeleteHeroeById(id);
+
+                if (rowsAffected > 0) 
+                {
+                    TempData["MensajeExito"] = $"Héroe con ID {id} eliminado exitosamente.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = $"No se encontró un héroe con ID {id} o no se pudo eliminar.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Ocurrió un error al eliminar el héroe con ID {id}: {ex.Message}";
+                Console.WriteLine($"Error al eliminar héroe: {ex}");
+            }
+
+           
+            return RedirectToAction("Index");
         }
     }
 }

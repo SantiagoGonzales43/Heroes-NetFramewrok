@@ -11,5 +11,6 @@ namespace PracticaAdoNet.DAL
         Task<List<Heroe>> GetAllHeroes();
         Task<int> CreateHeroe(CreateHeroeDtos heroe);
         Task<Heroe> GetHeroeById(int id);
+        Task<int> DeleteHeroeById(int id);
     }
 }

@@ -147,5 +147,40 @@ namespace PracticaAdoNet.DAL
             }
                 return heroeEncontrado;
         }
+
+        //Delete heroe
+        public async Task<int> DeleteHeroeById(int id)
+        {
+            var idHeroeEliminado = 0;
+            using(SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("DeleteHeroeById",connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@Id", id);
+
+                    try
+                    {
+                        await connection.OpenAsync();
+                        object result = await command.ExecuteScalarAsync();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            idHeroeEliminado = Convert.ToInt32(result);
+                        }
+                    }
+                    catch (SqlException ex)
+                    {
+                        throw new Exception($"A ocurrido un error en la base de datos al eliminar el heroe por id ${ex.Message}", ex);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception($"A ocurrido un error en el servidor al eliminar el heroe por id ${ex.Message}", ex);
+                    }
+                }
+            }
+
+            return idHeroeEliminado;
+        }
     }
 }

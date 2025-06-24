@@ -26,6 +26,7 @@ namespace PracticaAdoNet.Services
             {
                 heroesTransformado.Add(new HeroeViewModels
                 {
+                    Id = heroe.Id,
                     Nombre = heroe.Nombre,
                     Clase = heroe.Clase,
                     Nivel = heroe.Nivel
@@ -59,6 +60,13 @@ namespace PracticaAdoNet.Services
 
             return heroeTransformado;
 
+        }
+
+        public async Task<int> DeleteHeroeById(int id)
+        {
+            var idHeroeEliminado = await _heroeRepository.DeleteHeroeById(id);
+
+            return idHeroeEliminado;
         }
     }
 }

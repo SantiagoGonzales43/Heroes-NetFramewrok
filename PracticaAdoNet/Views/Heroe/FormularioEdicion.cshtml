@@ -1,0 +1,49 @@
+﻿@model PracticaAdoNet.Models.ViewModels.HeroeViewModels
+@{
+    ViewBag.Title = "FormularioEdicion";
+}
+
+<h2>Formulario Edicion de heroe = @Model.Nombre</h2>
+
+
+@if (TempData["MensajeExito"] != null)
+{
+    <div class="alert alert-success">@TempData["MensajeExito"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+@using (Html.BeginForm("UpdateHeroe", "Heroe", FormMethod.Post))
+{
+    @Html.AntiForgeryToken();
+    @Html.HiddenFor(m => m.Id);
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Nombre)
+        @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control", value = Model.Nombre })
+        @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Clase)
+        @Html.TextBoxFor(m => m.Clase, new { @class = "form-control", value = Model.Clase })
+        @Html.ValidationMessageFor(m => m.Clase, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Nivel)
+        @Html.TextBoxFor(m => m.Nivel, new { @class = "form-control", value = Model.Nivel, min=1, max=1000 })
+        @Html.ValidationMessageFor(m => m.Nivel, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Actualizar Heroe
+    </button>
+
+    @Html.ActionLink("Cancelar", "Index", "Heroe", null, new { @class = "btn btn-default" })
+}
+

@@ -31,6 +31,15 @@
             @Html.Hidden("id", heroe.Id)
             <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar a @heroe.Nombre?');">Eliminar Heroe</button>
         }
+
+        using (Html.BeginForm("FormularioEdicion","Heroe",FormMethod.Get))
+        {
+            @Html.AntiForgeryToken();
+            @Html.Hidden("id",heroe.Id)
+            <button class="btn btn-primary" type="submit">
+                Editar
+            </button>
+        }
         <hr />
     }
 }

@@ -149,12 +149,12 @@ namespace PracticaAdoNet.Controllers
             }
         } 
 
-        ////get para formulario
-        //public async Task<ActionResult> FormularioEdicion(int id)
-        //{
-        //    var datosHeroe = await _heroeService.GetHeroeById(id);
+        //get para formulario
+        public async Task<ActionResult> FormularioEdicion(int id)
+        {
+            var datosHeroe = await _heroeService.GetHeroeById(id);
 
-        //    return View(datosHeroe);
-        //}
+            return View(datosHeroe);
+        }
     }
 }

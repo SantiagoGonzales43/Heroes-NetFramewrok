@@ -68,5 +68,19 @@ namespace PracticaAdoNet.Services
 
             return idHeroeEliminado;
         }
+
+        public async Task<int> UpdateHeroe(UpdateHeroeDtos heroe)
+        {
+            var heroeDomain = new Heroe {
+                Id = heroe.Id,
+                Nombre = heroe.Nombre,
+                Clase = heroe.Clase,
+                Nivel = heroe.Nivel
+            };
+
+            var filasAfectadas = await _heroeRepository.UpdateHeroe(heroeDomain);
+
+            return filasAfectadas;
+        }
     }
 }

@@ -124,5 +124,37 @@ namespace PracticaAdoNet.Controllers
            
             return RedirectToAction("Index");
         }
+
+        //Update heroe
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UpdateHeroe(UpdateHeroeDtos heroe)
+        {
+
+            if(ModelState.IsValid)
+            {
+                var filasAfectadas = await _heroeService.UpdateHeroe(heroe);
+                if(filasAfectadas <= 0)
+                {
+                    TempData["ErrorMessage"] = $"No se ha podido actualizar su heroe por que su heroe con id = {heroe.Id} no existe";
+                    return RedirectToAction("Index");
+                }
+                TempData["MensajeExito"] = $"Se logro actualizar su heroe con id = {heroe.Id}";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Porfavor rellene bien el formulario";
+                return View(heroe);
+            }
+        } 
+
+        ////get para formulario
+        //public async Task<ActionResult> FormularioEdicion(int id)
+        //{
+        //    var datosHeroe = await _heroeService.GetHeroeById(id);
+
+        //    return View(datosHeroe);
+        //}
     }
 }

@@ -182,5 +182,43 @@ namespace PracticaAdoNet.DAL
 
             return idHeroeEliminado;
         }
+
+        //Update Heroe
+        public async Task<int> UpdateHeroe(Heroe heroe)
+        {
+            var filasAfectadas = 0;
+            using(SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using(SqlCommand command = new SqlCommand("UpdateHeroe",connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@Id", heroe.Id);
+                    command.Parameters.AddWithValue("@Nombre", heroe.Nombre);
+                    command.Parameters.AddWithValue("@Clase", heroe.Clase);
+                    command.Parameters.AddWithValue("@Nivel", heroe.Nivel);
+
+                    try
+                    {
+                        await connection.OpenAsync();
+                        object result = await command.ExecuteScalarAsync();
+
+                        if(result != null && result != DBNull.Value)
+                        {
+                            filasAfectadas = Convert.ToInt32(result);
+                        }
+                    }
+                    catch (SqlException ex)
+                    {
+                        throw new Exception($"A ocurrido un error en la base de datos al actualizar al heroe por id ${ex.Message}", ex);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception($"A ocurrido un error en el servidor al actualizar el heroe por id ${ex.Message}", ex);
+                    }
+                }
+            }
+            return filasAfectadas;
+        }
     }
 }
